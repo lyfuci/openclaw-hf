@@ -1,0 +1,39 @@
+{
+  "name": "@lyfuci/openclaw-hf",
+  "version": "0.1.0",
+  "description": "Complete Hugging Face Inference Providers plugin for OpenClaw — LLM chat, image generation, embeddings, STT, and video under one HF token.",
+  "license": "MIT",
+  "author": "Sean Sun <1194458432@qq.com>",
+  "type": "module",
+  "files": [
+    "api.ts",
+    "index.ts",
+    "embeddings-provider.ts",
+    "image-generation-provider.ts",
+    "stt-provider.ts",
+    "video-generation-provider.ts",
+    "openclaw.plugin.json",
+    "README.md"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "openclaw": "^2026.4.9",
+    "typescript": "^5.8.0"
+  },
+  "openclaw": {
+    "extensions": [
+      "./index.ts"
+    ],
+    "install": {
+      "npmSpec": "@lyfuci/openclaw-hf",
+      "defaultChoice": "npm",
+      "minHostVersion": ">=2026.4.9"
+    }
+  }
+}

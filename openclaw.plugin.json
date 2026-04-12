@@ -1,0 +1,35 @@
+{
+  "id": "openclaw-hf",
+  "enabledByDefault": false,
+  "providers": ["hf"],
+  "providerAuthEnvVars": {
+    "hf": ["HUGGINGFACE_HUB_TOKEN", "HF_TOKEN"]
+  },
+  "providerAuthChoices": [
+    {
+      "provider": "hf",
+      "method": "api-key",
+      "choiceId": "hf-api-key",
+      "choiceLabel": "Hugging Face API key",
+      "choiceHint": "LLM chat / image gen / embeddings / STT / video via HF Inference API",
+      "groupId": "hf",
+      "groupLabel": "Hugging Face",
+      "groupHint": "Complete HF Inference Providers plugin",
+      "optionKey": "hfApiKey",
+      "cliFlag": "--hf-api-key",
+      "cliOption": "--hf-api-key <key>",
+      "cliDescription": "Hugging Face API key (HF token)"
+    }
+  ],
+  "contracts": {
+    "imageGenerationProviders": ["hf"],
+    "memoryEmbeddingProviders": ["hf"],
+    "mediaUnderstandingProviders": ["hf"],
+    "videoGenerationProviders": ["hf"]
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}
