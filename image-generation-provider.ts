@@ -216,13 +216,9 @@ function buildAsset(params: {
 }
 
 function isConfigured(_ctx: ImageGenerationProviderConfiguredContext): boolean {
-  // We rely on the standard provider auth resolver at request time. The
-  // provider is reported as "configured" whenever the auth env vars or
-  // stored credential exists; the registry will short-circuit later if
-  // resolution actually fails.
-  if (process.env.HUGGINGFACE_HUB_TOKEN || process.env.HF_TOKEN) {
-    return true;
-  }
+  // Auth resolution is handled by the SDK auth resolver declared via
+  // `envVars` in index.ts; report configured here and let resolution fail
+  // downstream if no credential is available.
   return true;
 }
 
