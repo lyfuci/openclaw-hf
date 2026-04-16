@@ -35,7 +35,7 @@ import {
 const HF_HUB_API_BASE_URL = "https://huggingface.co/api";
 const HF_REPLICATE_BASE_URL = HUGGINGFACE_INFERENCE_BASE_URL.replace("/hf-inference", "/replicate");
 
-const DEFAULT_VIDEO_MODEL = "Wan-AI/Wan2.1-T2V-14B";
+const DEFAULT_VIDEO_MODEL = "Wan-AI/Wan2.2-T2V-A14B";
 
 // Bundled fallback mapping. Source: HF model api expand=inferenceProviderMapping,
 // captured 2026-04. Refreshed at runtime by `resolveReplicateProviderId`.

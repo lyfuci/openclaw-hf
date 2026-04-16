@@ -1,6 +1,6 @@
 {
   "name": "@lyfuci/openclaw-hf",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Complete Hugging Face Inference Providers plugin for OpenClaw — LLM chat, image generation, embeddings, STT, and video under one HF token.",
   "license": "MIT",
   "author": "Sean Sun <1194458432@qq.com>",
