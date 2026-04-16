@@ -8,7 +8,7 @@ Complete [Hugging Face Inference Providers](https://huggingface.co/docs/inferenc
 | **Image generation** | `hf-inference/models/<id>` | `black-forest-labs/FLUX.1-schnell` |
 | **Memory embeddings** | `scaleway/v1/embeddings` | `Qwen/Qwen3-Embedding-8B` |
 | **Audio transcription** | `hf-inference/models/<id>` | `openai/whisper-large-v3` |
-| **Video generation** | `replicate/v1/models/<id>` | `Wan-AI/Wan2.1-T2V-14B` |
+| **Video generation** | `replicate/v1/models/<id>` | `Wan-AI/Wan2.2-T2V-A14B` |
 
 HF Pro $2/month free tier covers all routes. No separate accounts needed.
 
