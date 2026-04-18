@@ -1,5 +1,8 @@
 # @lyfuci/openclaw-hf
 
+[![npm](https://img.shields.io/npm/v/@lyfuci/openclaw-hf)](https://www.npmjs.com/package/@lyfuci/openclaw-hf)
+[![GitHub](https://img.shields.io/badge/GitHub-lyfuci%2Fopenclaw--hf-blue?logo=github)](https://github.com/lyfuci/openclaw-hf)
+
 Complete [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers) plugin for [OpenClaw](https://docs.openclaw.ai) — covers all HF capability areas under a single HF API token.
 
 | Capability | Provider route | Default model |
