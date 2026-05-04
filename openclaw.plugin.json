@@ -2,8 +2,14 @@
   "id": "openclaw-hf",
   "enabledByDefault": false,
   "providers": ["hf"],
-  "providerAuthEnvVars": {
-    "hf": ["HUGGINGFACE_HUB_TOKEN", "HF_TOKEN"]
+  "setup": {
+    "providers": [
+      {
+        "id": "hf",
+        "authMethods": ["api-key"],
+        "envVars": ["HUGGINGFACE_HUB_TOKEN", "HF_TOKEN"]
+      }
+    ]
   },
   "providerAuthChoices": [
     {
