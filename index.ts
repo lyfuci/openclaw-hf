@@ -12,7 +12,7 @@
 //   Video gen    — Wan 2.1/2.2 family via replicate (HF Pro credits)
 
 import { PROVIDER_ID, createProviderApiKeyAuthMethod, definePluginEntry } from "./api.js";
-import { hfMemoryEmbeddingProviderAdapter } from "./embeddings-provider.js";
+import { hfEmbeddingProviderAdapter } from "./embeddings-provider.js";
 import { buildHfImageGenerationProvider } from "./image-generation-provider.js";
 import { hfMediaUnderstandingProvider } from "./stt-provider.js";
 import { buildHfVideoGenerationProvider } from "./video-generation-provider.js";
@@ -52,7 +52,7 @@ export default definePluginEntry({
       ],
     });
     api.registerImageGenerationProvider(buildHfImageGenerationProvider());
-    api.registerMemoryEmbeddingProvider(hfMemoryEmbeddingProviderAdapter);
+    api.registerEmbeddingProvider(hfEmbeddingProviderAdapter);
     api.registerMediaUnderstandingProvider(hfMediaUnderstandingProvider);
     api.registerVideoGenerationProvider(buildHfVideoGenerationProvider());
   },

@@ -17,11 +17,13 @@ export type {
 } from "openclaw/plugin-sdk/image-generation";
 export { resolveApiKeyForProvider } from "openclaw/plugin-sdk/image-generation-core";
 export type {
-  MemoryEmbeddingProvider,
-  MemoryEmbeddingProviderAdapter,
-  MemoryEmbeddingProviderCreateOptions,
-  MemoryEmbeddingProviderCreateResult,
-} from "openclaw/plugin-sdk/memory-core-host-engine-embeddings";
+  EmbeddingInput,
+  EmbeddingProvider,
+  EmbeddingProviderAdapter,
+  EmbeddingProviderCallOptions,
+  EmbeddingProviderCreateOptions,
+  EmbeddingProviderCreateResult,
+} from "openclaw/plugin-sdk/embedding-providers";
 export type {
   AudioTranscriptionRequest,
   AudioTranscriptionResult,

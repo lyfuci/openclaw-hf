@@ -29,7 +29,7 @@
   ],
   "contracts": {
     "imageGenerationProviders": ["hf"],
-    "memoryEmbeddingProviders": ["hf"],
+    "embeddingProviders": ["hf"],
     "mediaUnderstandingProviders": ["hf"],
     "videoGenerationProviders": ["hf"]
   },

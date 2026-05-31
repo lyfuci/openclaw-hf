@@ -6,20 +6,22 @@
 // embedding models on the same Scaleway route (e.g. `bge-multilingual-gemma2`)
 // are accessible by overriding `memorySearch.model`.
 //
-// We expose this as a `MemoryEmbeddingProviderAdapter` so it plugs into the
-// existing `agents.defaults.memorySearch.provider` config slot. The adapter
-// returns an `EmbeddingProvider`-shaped object with `embedQuery` /
-// `embedBatch` methods that openclaw's memory search and dreaming pipelines
-// already know how to drive.
+// Registered via the modern `EmbeddingProviderAdapter` API
+// (`api.registerEmbeddingProvider` + `contracts.embeddingProviders`). It plugs
+// into the `agents.defaults.memorySearch.provider` config slot and returns an
+// `EmbeddingProvider` with `embed` / `embedBatch` methods that openclaw's
+// memory search and dreaming pipelines drive.
 
 import {
   HUGGINGFACE_SCALEWAY_BASE_URL,
   PROVIDER_ID,
   resolveApiKeyForProvider,
-  type MemoryEmbeddingProvider,
-  type MemoryEmbeddingProviderAdapter,
-  type MemoryEmbeddingProviderCreateOptions,
-  type MemoryEmbeddingProviderCreateResult,
+  type EmbeddingInput,
+  type EmbeddingProvider,
+  type EmbeddingProviderAdapter,
+  type EmbeddingProviderCallOptions,
+  type EmbeddingProviderCreateOptions,
+  type EmbeddingProviderCreateResult,
 } from "./api.js";
 
 const DEFAULT_MODEL = "qwen3-embedding-8b";
@@ -39,6 +41,13 @@ function normalizeModel(raw: string | undefined): string {
   }
   const alias = REPO_ID_ALIASES[trimmed.toLowerCase()];
   return alias ?? trimmed;
+}
+
+// The host may hand us a plain string or a structured `EmbeddingInput`. HF text
+// embeddings only consume text, so we take the text and drop any non-text parts
+// (e.g. inline images) — this provider is text-only.
+function inputToText(input: EmbeddingInput): string {
+  return typeof input === "string" ? input : input.text;
 }
 
 type EmbeddingsApiResponse = {
@@ -72,6 +81,7 @@ async function postEmbeddings(params: {
   baseUrl: string;
   model: string;
   inputs: string[];
+  signal?: AbortSignal;
 }): Promise<number[][]> {
   const url = `${params.baseUrl}/v1/embeddings`;
   const response = await fetch(url, {
@@ -85,6 +95,7 @@ async function postEmbeddings(params: {
       model: params.model,
       input: params.inputs,
     }),
+    signal: params.signal,
   });
 
   let body: EmbeddingsApiResponse | string;
@@ -120,30 +131,38 @@ function buildProvider(params: {
   apiKey: string;
   baseUrl: string;
   model: string;
-}): MemoryEmbeddingProvider {
+}): EmbeddingProvider {
   return {
     id: PROVIDER_ID,
     model: params.model,
-    embedQuery: async (text: string) => {
-      const vectors = await postEmbeddings({ ...params, inputs: [text] });
+    embed: async (input: EmbeddingInput, options?: EmbeddingProviderCallOptions) => {
+      const vectors = await postEmbeddings({
+        ...params,
+        inputs: [inputToText(input)],
+        signal: options?.signal,
+      });
       const first = vectors[0];
       if (!first) {
         throw new Error("hf embeddings returned no vectors for query");
       }
       return first;
     },
-    embedBatch: async (texts: string[]) => {
-      if (texts.length === 0) {
+    embedBatch: async (inputs: EmbeddingInput[], options?: EmbeddingProviderCallOptions) => {
+      if (inputs.length === 0) {
         return [];
       }
-      return postEmbeddings({ ...params, inputs: texts });
+      return postEmbeddings({
+        ...params,
+        inputs: inputs.map(inputToText),
+        signal: options?.signal,
+      });
     },
   };
 }
 
-async function createMemoryEmbeddingProvider(
-  options: MemoryEmbeddingProviderCreateOptions,
-): Promise<MemoryEmbeddingProviderCreateResult> {
+async function createEmbeddingProvider(
+  options: EmbeddingProviderCreateOptions,
+): Promise<EmbeddingProviderCreateResult> {
   const auth = await resolveApiKeyForProvider({
     provider: PROVIDER_ID,
     cfg: options.config,
@@ -170,9 +189,9 @@ async function createMemoryEmbeddingProvider(
   };
 }
 
-export const hfMemoryEmbeddingProviderAdapter: MemoryEmbeddingProviderAdapter = {
+export const hfEmbeddingProviderAdapter: EmbeddingProviderAdapter = {
   id: PROVIDER_ID,
   defaultModel: DEFAULT_MODEL,
   transport: "remote",
-  create: createMemoryEmbeddingProvider,
+  create: createEmbeddingProvider,
 };
